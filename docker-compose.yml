@@ -5,7 +5,7 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root123       # updated to match backend
+      MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: confortaire
     ports:
       - "3307:3306"
@@ -14,10 +14,10 @@ services:
 
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - .:/app
+      - ./backend:/app
     ports:
       - "8000:8000"
     environment:
@@ -25,6 +25,15 @@ services:
       - SECRET_KEY=87d11ee34dd1befca81f051b2fe16d06b7420bdd8e31a0d4a11979e2abdc2357
     depends_on:
       - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
 
 volumes:
   mysql_data:
