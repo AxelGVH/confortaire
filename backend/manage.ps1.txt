@@ -1,0 +1,26 @@
+param (
+    [string]$action = "up"
+)
+
+switch ($action) {
+    "up" {
+        Write-Host "🔼 Starting Docker in detached mode..."
+        docker-compose up -d
+    }
+    "down" {
+        Write-Host "🛑 Stopping and removing containers and volumes..."
+        docker-compose down -v
+    }
+    "logs" {
+        Write-Host "📋 Showing logs..."
+        docker-compose logs -f
+    }
+    "restart" {
+        Write-Host "🔁 Rebuilding and restarting..."
+        docker-compose down -v
+        docker-compose up --build -d
+    }
+    default {
+        Write-Host "❓ Usage: ./manage.ps1 [up|down|logs|restart]"
+    }
+}
