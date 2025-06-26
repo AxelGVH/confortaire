@@ -1,11 +1,21 @@
-# Build stage
-FROM node:18 AS builder
-WORKDIR /app
-COPY  . /app/
-RUN npm install && npm run build
+FROM node:18
 
-# Serve stage
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Install dependencies
+RUN npm install
+
+# Build the React app
+RUN npm run build
+
+# Install a simple HTTP server to serve the static files
+RUN npm install -g serve
+
+# Set the command to serve the app
+CMD ["serve", "-s", "build"]
+
+EXPOSE 3000
