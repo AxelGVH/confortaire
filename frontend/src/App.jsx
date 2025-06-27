@@ -1,19 +1,15 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Departments from './pages/Departments';
-import Users from './pages/Users';
-import CreateUser from './pages/CreateUser';
-import AdminPanel from './pages/AdminPanel';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
-import Layout from './layouts/Layout';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import MainLayout from './layouts/MainLayout';
+import AuthLayout from './layouts/AuthLayout';
+import AppRoutes from './routes/AppRoutes';
 
 const ProtectedRoute = ({ children, roles }) => {
   const { user } = useAuth();
   if (!user || (roles && !roles.includes(user.role))) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return children;
 };
@@ -22,33 +18,34 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/admin" element={
-              <ProtectedRoute roles={['admin']}>
-                <AdminPanel />
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <AuthLayout>
+                <Login />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/logout"
+            element={
+              <AuthLayout>
+                <Logout />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <AppRoutes />
+                </MainLayout>
               </ProtectedRoute>
-            } />
-            <Route path="/admin/departments" element={
-              <ProtectedRoute roles={['admin']}>
-                <Departments />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/users" element={
-              <ProtectedRoute roles={['admin']}>
-                <Users />
-              </ProtectedRoute>
-            } />            
-            <Route path="/admin/users/create" element={
-              <ProtectedRoute roles={['admin']}>
-                <CreateUser />
-              </ProtectedRoute>
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-          </Routes>
-        </Layout>
+            }
+          />
+        </Routes>
       </Router>
     </AuthProvider>
   );

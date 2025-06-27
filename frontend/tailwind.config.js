@@ -1,13 +1,17 @@
-
+// tailwind.config.js
 module.exports = {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx}",
+  ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Poppins', 'ui-sans-serif', 'system-ui'],
+      },
       colors: {
-        primary: '#1E2F94',
-        secondary: '#4A60C2',
-        accent: '#F5F7FA'
-      }
+        primary: '#1E2F94', // Confortaire brand blue
+      },
     },
   },
   plugins: [],

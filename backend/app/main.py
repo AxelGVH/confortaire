@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import department
 from app.routes import auth
+from app.routes import user
 
 app = FastAPI(
     title="Confortaire API",
@@ -20,3 +21,4 @@ app.add_middleware(
 # Register routes
 app.include_router(department.router, prefix="/departments", tags=["Departments"])
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(auth.router, prefix="/user", tags=["User"])

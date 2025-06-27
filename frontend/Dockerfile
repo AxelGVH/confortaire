@@ -16,6 +16,6 @@ RUN npm run build
 RUN npm install -g serve
 
 # Set the command to serve the app
-CMD ["serve", "-s", "build"]
+CMD ["serve", "-s", "dist"]
 
 EXPOSE 3000

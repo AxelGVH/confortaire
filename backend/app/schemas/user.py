@@ -6,16 +6,28 @@ from typing import Optional
 class UserBase(BaseModel):
     email: EmailStr
     role: Optional[str] = "user"
+    password: str
 
 class UserCreate(UserBase):
-    password: str
+    created_by: Optional[UUID] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-class UserRead(UserBase):
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
+    updated_by: Optional[UUID] = None
+
+class UserResponse(BaseModel):
     id: UUID
+    email: str
+    role: str
+    is_active: bool
+    created_by: Optional[UUID]
+    updated_by: Optional[UUID]
     created_at: datetime
     updated_at: datetime
 
