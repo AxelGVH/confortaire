@@ -5,18 +5,27 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // ✅ add this
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && !user) {
-      axios.get("/auth/me", {
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(res => {
-        setUser({ ...res.data, token });
-      }).catch(() => {
-        localStorage.removeItem("token");
-        setUser(null);
-      });
+      axios
+        .get("/auth/me", {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+          setUser({ ...res.data, token });
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          setUser(null);
+        })
+        .finally(() => {
+          setLoading(false); // ✅ whether success or fail
+        });
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -26,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

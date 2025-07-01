@@ -2,8 +2,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Departments from '../pages/Departments';
-import Users from '../pages/Users';
-import CreateUser from '../pages/UserForm';
+import ListUsers from '../pages/ListUsers';
+import UserForm from '../pages/UserForm';
 import AdminPanel from '../pages/AdminPanel';
 
 const AppRoutes = () => (

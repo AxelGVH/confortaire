@@ -23,7 +23,13 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     payload = decode_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid token")
-    user = db.query(User).filter(User.id == payload.get("sub")).first()
+
+    try:
+        user_id = UUID(payload.get("sub")).bytes
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid UUID format in token")
+
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     return user
@@ -42,13 +48,22 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     db.refresh(user)
     return user
 
+from uuid import UUID
+
 @router.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == form_data.username).first()
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    access_token = create_access_token(data={"sub": str(user.id)})
+
+    # Convert binary UUID to string
+    user_uuid = str(UUID(bytes=user.id))  # ✅ Proper conversion
+    access_token = create_access_token(data={"sub": user_uuid})
+
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+
 
 @router.get("/me", response_model=UserResponse)
 def read_me(current_user: User = Depends(get_current_user)):

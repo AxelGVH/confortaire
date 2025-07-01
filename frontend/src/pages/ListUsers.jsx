@@ -1,40 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
+import axios from '../utils/axiosInstance';
 
-const UserList = () => {
+console.log("Stored token:", localStorage.getItem("token"));
+
+const ListUsers = () => {
   const [users, setUsers] = useState([]);
-  const token = localStorage.getItem('token');
+  
+useEffect(() => {
+  const fetchUsers = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('No token found in localStorage.');
+      alert('Please log in again.');
+      return;
+    }
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await axios.get('/users', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsers(res.data);
-      } catch (err) {
-        console.error('Error fetching users:', err);
-        alert('Failed to load users');
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  const handleDelete = async (userId) => {
-    if (!confirm('Are you sure you want to deactivate this user?')) return;
     try {
-      await axios.delete(`/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUsers(users.map(u => (u.id === userId ? { ...u, is_active: false } : u)));
-      alert('User deactivated');
+      const res = await axios.get('/users'); // No need to manually set headers
+      if (Array.isArray(res.data)) {
+        setUsers(res.data);
+      } else {
+        console.error('Expected an array from /users, got:', res.data);
+        setUsers([]);
+      }
     } catch (err) {
-      console.error('Delete failed:', err);
-      alert('Error deactivating user');
+      console.error('Error fetching users:', err);
+      if (err.response?.status === 401) {
+        alert('Session expired. Please log in again.');
+        // Optional: Redirect to login page
+      } else {
+        alert('Failed to load users.');
+      }
     }
   };
+
+  fetchUsers();
+}, []);
+
+
+const handleDelete = async (userId) => {
+  if (!confirm('Are you sure you want to deactivate this user?')) return;
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUsers(users.map(u =>
+      u.id === userId ? { ...u, is_active: false } : u
+    ));
+    alert('User deactivated');
+  } catch (err) {
+    console.error('Delete failed:', err);
+    alert('Error deactivating user');
+  }
+};
+
 
   return (
     <div className="p-4 bg-white rounded shadow max-w-6xl mx-auto mt-6">
@@ -108,4 +130,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default ListUsers;

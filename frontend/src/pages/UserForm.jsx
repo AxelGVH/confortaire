@@ -82,7 +82,7 @@ const UserForm = () => {
       <h2 className="text-2xl font-semibold mb-6">
         {userId ? 'Edit User' : 'Create New User'}
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" autoComplete='off'> 
         <div>
           <label className="block mb-1">Name</label>
           <input
@@ -99,6 +99,7 @@ const UserForm = () => {
             {...register('email', { required: 'Email is required' })}
             className="w-full border p-2 rounded"
             type="email"
+            autoComplete='new-email'
           />
           {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
         </div>
@@ -111,6 +112,7 @@ const UserForm = () => {
             })}
             className="w-full border p-2 rounded"
             type="password"
+            autoComplete='new-password'
           />
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>

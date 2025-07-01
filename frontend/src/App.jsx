@@ -7,12 +7,19 @@ import AuthLayout from './layouts/AuthLayout';
 import AppRoutes from './routes/AppRoutes';
 
 const ProtectedRoute = ({ children, roles }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div className="text-center p-10">Checking session...</div>;
+  }
+
   if (!user || (roles && !roles.includes(user.role))) {
     return <Navigate to="/login" />;
   }
+
   return children;
 };
+
 
 function App() {
   return (

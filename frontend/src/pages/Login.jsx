@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import axios from '../utils/axiosInstance'; 
+
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,20 +27,30 @@ export default function Login() {
       params.append('username', formData.email);
       params.append('password', formData.password);
 
-      const res = await axios.post('/auth/login', params);
+      const res = await axios.post('/auth/login', params, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
       const token = res.data.access_token;
       localStorage.setItem('token', token);
 
-      const me = await axios.get('/auth/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setUser({ ...me.data, token });
-      navigate('/');
+      try {
+        const me = await axios.get('/auth/me');
+        setUser({ ...me.data, token });
+        navigate('/');
+      } catch (err) {
+        console.error('Token invalid or expired:', err);
+        setError('Login succeeded but failed to fetch user data.');
+      }
     } catch (err) {
+      console.error('Login failed:', err);
       setError('Invalid credentials');
     }
   };
+
+
 
   return (
     <div className="text-left">

@@ -6,10 +6,11 @@ from typing import Optional
 class UserBase(BaseModel):
     email: EmailStr
     role: Optional[str] = "user"
-    password: str
 
 class UserCreate(UserBase):
+    password: str
     created_by: Optional[UUID] = None
+
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -26,10 +27,10 @@ class UserResponse(BaseModel):
     email: str
     role: str
     is_active: bool
-    created_by: Optional[UUID]
-    updated_by: Optional[UUID]
-    created_at: datetime
-    updated_at: datetime
+    created_by: Optional[UUID] = None
+    updated_by: Optional[UUID] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
     class Config:
         orm_mode = True

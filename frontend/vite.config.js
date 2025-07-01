@@ -7,5 +7,5 @@ export default defineConfig({
   build: {
     outDir: 'dist',
   },
-  base: './', // ensures relative URLs in build output
+  base: '/', // ensures relative URLs in build output
 });
