@@ -8,7 +8,11 @@ class UserBase(BaseModel):
     role: Optional[str] = "user"
 
 class UserCreate(UserBase):
+    email: EmailStr
     password: str
+    name: str
+    role: str
+    is_active: Optional[bool] = True
     created_by: Optional[UUID] = None
 
 
@@ -18,6 +22,7 @@ class UserLogin(BaseModel):
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
+    name:  Optional[str] = None
     password: Optional[str] = None
     role: Optional[str] = None
     updated_by: Optional[UUID] = None
@@ -25,6 +30,7 @@ class UserUpdate(BaseModel):
 class UserResponse(BaseModel):
     id: UUID
     email: str
+    name: str
     role: str
     is_active: bool
     created_by: Optional[UUID] = None

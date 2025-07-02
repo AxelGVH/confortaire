@@ -21,9 +21,12 @@ def create_user(
         email=user.email,
         password=hash_password(user.password),
         role=user.role,
+        name=user.name,
+        is_active=user.is_active,
         created_by=current_user.id,
         updated_by=current_user.id,
     )
+
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

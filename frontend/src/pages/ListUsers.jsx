@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
 import axios from '../utils/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
-console.log("Stored token:", localStorage.getItem("token"));
+
 
 const ListUsers = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate(); // ✅ must be inside the component
   
 useEffect(() => {
   const fetchUsers = async () => {
@@ -99,7 +101,7 @@ const handleDelete = async (userId) => {
                 <td className="p-2 border-b">
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => alert(`Edit user ${user.id}`)} // TODO: replace with actual edit route
+                      onClick={() => navigate(`/admin/users/edit/${user.id}`)} // TODO: replace with actual edit route
                       className="text-blue-600 hover:text-blue-800"
                       title="Edit"
                     >

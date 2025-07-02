@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../utils/axiosInstance';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -60,6 +60,7 @@ const UserForm = () => {
         });
         toast.success('User updated successfully!');
       } else {
+        console.log("Users save")
         await axios.post('/users/', data, {
           headers: { Authorization: `Bearer ${token}` },
         });
