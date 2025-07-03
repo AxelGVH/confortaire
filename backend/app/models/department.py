@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.dialects.mysql import BINARY
-from datetime import datetime
+from datetime import datetime, timezone
 from app.database import Base
 
 class Department(Base):
@@ -11,8 +11,9 @@ class Department(Base):
     name = Column(String(255), nullable=False)
     description = Column(String(1024), nullable=True)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
 
     created_by = Column(BINARY(16), nullable=True)
     updated_by = Column(BINARY(16), nullable=True)

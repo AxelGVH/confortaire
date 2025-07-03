@@ -6,6 +6,7 @@ from typing import Optional
 class DepartmentBase(BaseModel):
     name: str
     description: Optional[str] = None
+    is_active: Optional[bool] = True
 
 class DepartmentCreate(DepartmentBase):
     pass

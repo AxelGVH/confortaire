@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import department
 from app.routes import auth
 from app.routes import user
+from app.routes import shift
+from app.routes import vendor
+from app.routes import upload
 from app import models
 from app.database import Base, engine
 
@@ -27,3 +30,6 @@ Base.metadata.create_all(bind=engine)
 app.include_router(department.router, prefix="/departments", tags=["Departments"])
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(user.router, prefix="/users", tags=["Users"])
+app.include_router(shift.router, prefix="/shifts", tags=["Shifts"])
+app.include_router(vendor.router, prefix="/vendors", tags=["Vendors"])
+app.include_router(upload.router)

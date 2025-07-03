@@ -21,15 +21,32 @@ def list_departments(db: Session = Depends(get_db)):
 
 @router.get("/{dept_id}", response_model=DepartmentRead)
 def get_department(dept_id: UUID, db: Session = Depends(get_db)):
-    department = db.query(Department).filter(Department.id == dept_id).first()
+    department = db.query(Department).filter(Department.id == dept_id.bytes).first()
     if not department:
         raise HTTPException(status_code=404, detail="Department not found")
     return department
 
 @router.delete("/{dept_id}", status_code=204)
 def delete_department(dept_id: UUID, db: Session = Depends(get_db)):
-    department = db.query(Department).filter(Department.id == dept_id).first()
+    department = db.query(Department).filter(Department.id == dept_id.bytes).first()
     if not department:
         raise HTTPException(status_code=404, detail="Department not found")
     db.delete(department)
     db.commit()
+
+@router.put("/{department_id}", response_model=DepartmentRead)
+def update_department(
+    department_id: UUID,
+    dept: DepartmentCreate,  # or a specific DepartmentUpdate schema
+    db: Session = Depends(get_db),
+):
+    department = db.query(Department).filter(Department.id == department_id.bytes).first()
+    if not department:
+        raise HTTPException(status_code=404, detail="Department not found")
+    
+    department.name = dept.name
+    department.description = dept.description
+    department.is_active = dept.is_active
+    db.commit()
+    db.refresh(department)
+    return department
