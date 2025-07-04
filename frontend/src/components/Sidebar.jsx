@@ -1,6 +1,6 @@
 import { useSidebar } from '../context/SidebarContext';
 import { NavLink } from 'react-router-dom';
-import { Home, Settings, UserCheck, Tool } from 'react-feather';
+import { Home, Settings, UserCheck, Tool, Users, Package } from 'react-feather';
 
 export default function Sidebar() {
   const { isOpen } = useSidebar();
@@ -47,6 +47,30 @@ export default function Sidebar() {
           <Tool size={18} />
           Machines
         </NavLink>
+
+        <NavLink
+          to="/employees"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded ${
+              isActive ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Users size={18} />
+          Employees
+        </NavLink>
+
+        <NavLink
+          to="/parts"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded ${
+              isActive ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'
+            }`
+          }
+        >
+          <Package size={18} />
+          Parts
+        </NavLink>          
 
         <NavLink
           to="/admin"

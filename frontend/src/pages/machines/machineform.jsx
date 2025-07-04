@@ -35,7 +35,7 @@ const MachineForm = () => {
     const fetchMetadata = async () => {
       try {
         const [depRes, venRes] = await Promise.all([
-          axios.get('/admin/departments', {
+          axios.get('/departments', {
             headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get('/vendors', {

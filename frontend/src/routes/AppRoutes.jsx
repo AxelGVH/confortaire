@@ -29,6 +29,13 @@ import VendorForm from '../pages/vendors/VendorForm';
 import ListMachines from '../pages/machines/ListMachines';
 import MachineForm from '../pages/machines/MachineForm';
 
+// Employees Module (general access)
+import ListEmployees from '../pages/employees/ListEmployees';
+import EmployeeForm from '../pages/employees/EmployeeForm';
+
+// Parts Module (general access)
+import ListParts from '../pages/parts/ListParts';
+import PartForm from '../pages/parts/PartForm';
 
 const AppRoutes = () => (
   <Routes>
@@ -220,7 +227,68 @@ const AppRoutes = () => (
         </PrivateRoute>
       }
     />
-
+    {/* Employees (general access, not admin-only) */}
+    <Route
+      path="/employees"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <ListEmployees />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/employees/create"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <EmployeeForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/employees/edit/:id"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <EmployeeForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    {/* Parts (general access) */}
+    <Route
+      path="/parts"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <ListParts />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/parts/create"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <PartForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/parts/edit/:id"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <PartForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
 
     {/* 404 Fallback */}
     <Route path="*" element={<NotFound />} />

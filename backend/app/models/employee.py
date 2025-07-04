@@ -1,12 +1,9 @@
 import uuid
-from datetime import datetime, time, timezone
-from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey, Numeric, Time
+from datetime import datetime, timezone
+from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey, Numeric
 from sqlalchemy.dialects.mysql import BINARY
-from sqlalchemy.orm import relationship
 from app.database import Base
-#------------------------
-# Employee Model
-# ------------------------
+
 class Employee(Base):
     __tablename__ = "employees"
 
@@ -22,3 +19,6 @@ class Employee(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<Employee(name={self.name}, email={self.email})>"

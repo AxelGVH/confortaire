@@ -2,9 +2,10 @@ import os
 import uuid
 from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, Query
 from sqlalchemy.orm import Session
+from typing import Optional
 from uuid import UUID
-from app.models.file_attachment import FileAttachment
-from app.schemas.file_attachment import FileAttachmentRead
+from app.models.fileattachment import fil
+from app.schemas.fileattachment import FileAttachmentRead
 from app.database import get_db
 
 router = APIRouter(prefix="/upload", tags=["File Uploads"])

@@ -5,7 +5,7 @@ from app.database import get_db
 from app.models.machine import Machine
 from app.schemas.machine import MachineCreate, MachineRead, MachineUpdate
 
-router = APIRouter(prefix="/machines", tags=["Machines"])
+router = APIRouter()
 
 @router.get("/", response_model=list[MachineRead])
 def list_machines(db: Session = Depends(get_db)):
@@ -20,11 +20,19 @@ def get_machine(machine_id: UUID, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=MachineRead)
 def create_machine(machine: MachineCreate, db: Session = Depends(get_db)):
-    db_machine = Machine(**machine.dict())
+    machine_data = machine.dict()
+
+    # Convert UUIDs to bytes
+    machine_data["department_id"] = machine_data["department_id"].bytes
+    if machine_data.get("vendor_id"):
+        machine_data["vendor_id"] = machine_data["vendor_id"].bytes
+
+    db_machine = Machine(**machine_data)
     db.add(db_machine)
     db.commit()
     db.refresh(db_machine)
     return db_machine
+
 
 @router.put("/{machine_id}", response_model=MachineRead)
 def update_machine(machine_id: UUID, updated: MachineUpdate, db: Session = Depends(get_db)):
