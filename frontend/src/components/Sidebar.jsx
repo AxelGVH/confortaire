@@ -73,6 +73,18 @@ export default function Sidebar() {
         </NavLink>          
 
         <NavLink
+          to="/activities"
+          className={({ isActive }) =>
+            `flex items-center gap-2 px-4 py-2 rounded ${
+              isActive ? 'bg-primary text-white' : 'text-gray-700 hover:bg-gray-100'
+            }`
+          }
+        >
+          <ClipboardList size={18} />
+          Activities
+        </NavLink>
+
+        <NavLink
           to="/admin"
           className={({ isActive }) =>
             `flex items-center space-x-2 px-4 py-2 rounded ${

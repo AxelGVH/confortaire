@@ -37,6 +37,11 @@ import EmployeeForm from '../pages/employees/EmployeeForm';
 import ListParts from '../pages/parts/ListParts';
 import PartForm from '../pages/parts/PartForm';
 
+// Activities Module (general access)
+import ListActivities from '../pages/activities/ListActivities';
+import ActivityForm from '../pages/activities/ActivityForm';
+
+
 const AppRoutes = () => (
   <Routes>
     {/* Redirect root to dashboard */}
@@ -290,6 +295,38 @@ const AppRoutes = () => (
       }
     />
 
+    {/* Activities (general access) */}
+    <Route
+      path="/activities"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <ListActivities />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/activities/create"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <ActivityForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    <Route
+      path="/activities/edit/:id"
+      element={
+        <PrivateRoute>
+          <MainLayout>
+            <ActivityForm />
+          </MainLayout>
+        </PrivateRoute>
+      }
+    />
+    
     {/* 404 Fallback */}
     <Route path="*" element={<NotFound />} />
   </Routes>
