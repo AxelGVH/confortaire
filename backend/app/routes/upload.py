@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, Q
 from sqlalchemy.orm import Session
 from typing import Optional
 from uuid import UUID
-from app.models.fileattachment import fil
+from app.models.fileattachment import FileAttachment
 from app.schemas.fileattachment import FileAttachmentRead
 from app.database import get_db
 

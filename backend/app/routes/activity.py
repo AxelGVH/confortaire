@@ -6,10 +6,7 @@ from app.database import get_db
 from app.models.activity import Activity
 from app.schemas.activity import ActivityCreate, ActivityUpdate, ActivityRead
 
-router = APIRouter(
-    prefix="/activities",
-    tags=["Activities"]
-)
+router = APIRouter()
 
 def to_bytes(u: uuid.UUID) -> bytes:
     return u.bytes if isinstance(u, uuid.UUID) else u

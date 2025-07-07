@@ -14,7 +14,7 @@ class Activity(Base):
     status = Column(Enum("Created", "In Progress", "Completed", "Halted"), default="Created", nullable=False)
     date = Column(Date, nullable=False)
     start_time = Column(Time, nullable=False)
-    required_time = Column(Float, nullable=False)
+    required_time = Column(Time, nullable=False)
     details = Column(String(1000), nullable=False)
     assigned_to = Column(BINARY(16), ForeignKey("employees.id"), nullable=True)
     is_active = Column(Boolean, default=True)

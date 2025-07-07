@@ -9,6 +9,7 @@ from app.routes import upload
 from app.routes import machine
 from app.routes import employee
 from app.routes import part
+from app.routes import activity
 from app.database import Base, engine
 
 app = FastAPI(
@@ -37,4 +38,5 @@ app.include_router(vendor.router, prefix="/vendors", tags=["Vendors"])
 app.include_router(machine.router, prefix="/machines", tags=["Machines"])
 app.include_router(employee.router, prefix="/employees", tags=["Employees"])
 app.include_router(part.router, prefix="/parts", tags=["Parts"])
+app.include_router(activity.router, prefix="/activities", tags=["Activities"])
 app.include_router(upload.router)

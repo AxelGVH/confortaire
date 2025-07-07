@@ -32,12 +32,11 @@ services:
         condition: service_healthy
   frontend:
     build:
-      context: ./frontend
+      context: E:/projects/confortaire/frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    depends_on:
-      - backend
+      - "3000:80"  # nginx serves on 80, exposed on 3000
+    restart: always
 
 volumes:
   mysql_data:

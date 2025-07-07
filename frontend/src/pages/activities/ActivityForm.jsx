@@ -137,14 +137,17 @@ const ActivityForm = () => {
 
           <div className="col-span-2 sm:col-span-1">
             <label className="block mb-1 text-sm font-medium text-gray-700">Activity Type</label>
-            <input
-              type="text"
-              name="activity_type"
-              value={form.activity_type}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded px-3 py-2"
-            />
+            <select
+            name="activity_type"
+            value={form.activity_type}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            >
+            <option value="">Select Type</option>
+            <option value="Preventive">Preventive</option>
+            <option value="On Spot">On Spot</option>
+            </select>
           </div>
 
           <div className="col-span-2 sm:col-span-1">
@@ -204,13 +207,12 @@ const ActivityForm = () => {
           <div className="col-span-2 sm:col-span-1">
             <label className="block mb-1 text-sm font-medium text-gray-700">Required Time (hrs)</label>
             <input
-              type="number"
-              step="0.1"
-              name="required_time"
-              value={form.required_time}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded px-3 py-2"
+            type="time"
+            name="required_time"
+            value={form.required_time}
+            onChange={handleChange}
+            required
+            className="w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
 

@@ -1,6 +1,6 @@
 import { useSidebar } from '../context/SidebarContext';
 import { NavLink } from 'react-router-dom';
-import { Home, Settings, UserCheck, Tool, Users, Package } from 'react-feather';
+import { Home, Settings, UserCheck, Tool, Users, Package, List } from 'react-feather';
 
 export default function Sidebar() {
   const { isOpen } = useSidebar();
@@ -80,7 +80,7 @@ export default function Sidebar() {
             }`
           }
         >
-          <ClipboardList size={18} />
+          <List size={18} />
           Activities
         </NavLink>
 
