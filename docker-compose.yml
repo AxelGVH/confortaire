@@ -1,21 +1,6 @@
-services:
-  db:
-    image: mysql:8
-    container_name: confortaire-db-1
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: confortaire
-    ports:
-      - "3308:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5  
+version: '3.8'
 
+services:
   backend:
     build:
       context: ./backend
@@ -25,18 +10,14 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=mysql+pymysql://root:root123@db:3306/confortaire
+      - DATABASE_URL=mysql+pymysql://admin:F0rtAir325$@confortaire-db.ch02mm6o0f15.ap-south-1.rds.amazonaws.com:3306/confortaire
       - SECRET_KEY=87d11ee34dd1befca81f051b2fe16d06b7420bdd8e31a0d4a11979e2abdc2357
-    depends_on:
-      db:
-        condition: service_healthy
-  frontend:
-    build:
-      context: E:/projects/confortaire/frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:80"  # nginx serves on 80, exposed on 3000
     restart: always
 
-volumes:
-  mysql_data:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    restart: always
