@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import axios from 'axios'; // Replacing axiosInstance
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,33 +25,45 @@ export default function Login() {
       params.append('username', formData.email);
       params.append('password', formData.password);
 
-      // LOGIN request
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, params, {
+      // Step 1: Login request
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
+        body: params,
       });
 
-      const token = res.data.access_token;
+      if (!res.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const data = await res.json();
+      const token = data.access_token;
+
+      if (!token) {
+        throw new Error('No token received from server');
+      }
+
       localStorage.setItem('token', token);
 
-      try {
-        // GET CURRENT USER with token
-        const me = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      // Step 2: Fetch user info using token
+      const meRes = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        setUser({ ...me.data, token });
-        navigate('/');
-      } catch (err) {
-        console.error('Token invalid or expired:', err);
-        setError('Login succeeded but failed to fetch user data.');
+      if (!meRes.ok) {
+        throw new Error('Token invalid or expired');
       }
+
+      const userData = await meRes.json();
+      setUser({ ...userData, token });
+      navigate('/');
     } catch (err) {
-      console.error('Login failed:', err);
-      setError('Invalid credentials');
+      console.error('Login error:', err);
+      setError(err.message || 'Login failed');
     }
   };
 
