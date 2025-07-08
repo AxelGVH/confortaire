@@ -1,9 +1,7 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import axios from '../../utils/axiosInstance'; 
-
+import axios from 'axios'; // Replacing axiosInstance
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,12 +20,14 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     try {
       const params = new URLSearchParams();
       params.append('username', formData.email);
       params.append('password', formData.password);
 
-      const res = await axios.post('/auth/login', params, {
+      // LOGIN request
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, params, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -37,7 +37,13 @@ export default function Login() {
       localStorage.setItem('token', token);
 
       try {
-        const me = await axios.get('/auth/me');
+        // GET CURRENT USER with token
+        const me = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setUser({ ...me.data, token });
         navigate('/');
       } catch (err) {
@@ -49,8 +55,6 @@ export default function Login() {
       setError('Invalid credentials');
     }
   };
-
-
 
   return (
     <div className="text-left">
