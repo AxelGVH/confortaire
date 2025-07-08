@@ -334,10 +334,13 @@
 
 // export default AppRoutes;
 import { Routes, Route } from 'react-router-dom';
+import Login from '../pages/auth/Login';
 import Logout from '../pages/auth/Logout';
 
 const AppRoutes = () => (
   <Routes>
+    <Route path="/" element={<Login />} />
+    <Route path="/login" element={<Login />} />
     <Route path="/logout" element={<Logout />} />
   </Routes>
 );

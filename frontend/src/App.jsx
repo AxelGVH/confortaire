@@ -35,8 +35,11 @@
 // }
 
 // export default App;
+import AppRoutes from './routes/AppRoutes';
+import './index.css';
+
 function App() {
-  return <h1 style={{ color: 'red' }}>Test Render Works</h1>;
+  return <AppRoutes />;
 }
 
 export default App;
