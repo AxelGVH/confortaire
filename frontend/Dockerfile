@@ -4,15 +4,19 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
-RUN ls -la /app/dist
 
-COPY . .
+COPY . .             # Copy everything including src/, index.html, etc.
 RUN npm run build
 
-# Step 2: Serve using nginx
+# Step 2: Serve with Nginx
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Remove default nginx config and add your own if needed
+# Remove default config if desired (optional)
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Optional: Custom config (recommended)
+# COPY nginx.conf /etc/nginx/conf.d
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
