@@ -17,7 +17,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
     ports:
-      - "3000:80"
-    restart: always
+      - "80:80"              # Map port 80 inside the container to 80 outside
+    container_name: confortaire-frontend
+    restart: unless-stopped

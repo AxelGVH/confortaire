@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
+RUN ls -la /app/dist
 
 COPY . .
 RUN npm run build
