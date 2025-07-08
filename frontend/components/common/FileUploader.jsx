@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from '../../utils/axiosInstance';
 
 const FileUploader = ({ entityType, entityId, onUploaded, maxSizeMB = 10 }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,17 +31,26 @@ const FileUploader = ({ entityType, entityId, onUploaded, maxSizeMB = 10 }) => {
 
     try {
       setUploading(true);
-      const res = await axios.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const token = localStorage.getItem('token');
+
+      const res = await fetch('/upload', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       });
 
-      const uploaded = res.data;
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+
+      const uploaded = await res.json();
       onUploaded?.(uploaded);
 
       setSelectedFile(null);
       setTags('');
 
-      // Open or Save?
       const choice = window.confirm('File uploaded successfully. Open now?');
       if (choice) {
         window.open(`/${uploaded.file_path}`, '_blank');

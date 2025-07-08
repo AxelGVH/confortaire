@@ -1,12 +1,23 @@
 import React from 'react';
-import axios from '../../utils/axiosInstance';
 import { X } from 'react-feather';
 
 const AttachmentPanel = ({ files = [], onDeleted }) => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this file?')) return;
+
+    const token = localStorage.getItem('token');
     try {
-      await axios.delete(`/upload/attachments/${id}`);
+      const response = await fetch(`/upload/attachments/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
       onDeleted?.(id);
     } catch (err) {
       console.error('Failed to delete attachment', err);
