@@ -26,7 +26,6 @@ app.add_middleware(
 )
 
 
-Base.metadata.create_all(bind=engine)
 # Optional: Add CORS middleware if frontend will talk to this API
 
 # Register routes
@@ -40,3 +39,8 @@ app.include_router(employee.router, prefix="/employees", tags=["Employees"])
 app.include_router(part.router, prefix="/parts", tags=["Parts"])
 app.include_router(activity.router, prefix="/activities", tags=["Activities"])
 app.include_router(upload.router)
+
+
+@app.get("/health", tags=["Health"])
+def health_check():
+    return {"status": "ok"}
